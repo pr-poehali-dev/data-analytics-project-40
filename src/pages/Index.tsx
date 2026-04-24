@@ -173,7 +173,7 @@ const Index = () => {
           </nav>
           <a
             href="#cta"
-            className="hidden md:inline-flex px-5 py-2.5 text-sm font-medium bg-accent text-white rounded-full hover:shadow-lg hover:shadow-accent/40 transition-all"
+            className="btn-shimmer hidden md:inline-flex px-5 py-2.5 text-sm font-medium bg-gradient-to-r from-accent via-[#ff6a1a] to-accent text-white rounded-full shadow-[0_6px_24px_-8px_rgba(255,77,26,0.7)] hover:shadow-[0_10px_30px_-6px_rgba(255,77,26,0.9)] hover:-translate-y-0.5 transition-all"
           >
             Обсудить
           </a>
@@ -183,7 +183,12 @@ const Index = () => {
       {/* Hero */}
       <section id="hero" className="relative pt-28 pb-20 px-8 overflow-hidden">
         <div className="absolute inset-0 bg-grid opacity-40" />
-        <div className="absolute top-0 right-0 w-[60%] h-full ember-glow opacity-60 pointer-events-none" />
+        <div className="absolute top-0 right-0 w-[60%] h-full ember-glow opacity-60 pointer-events-none animate-pulse-glow" />
+        <div className="absolute -top-32 -left-32 w-[520px] h-[520px] rounded-full bg-accent/10 blur-[140px] pointer-events-none" />
+        <div
+          className="absolute bottom-0 right-1/3 w-[420px] h-[420px] rounded-full bg-accent/20 blur-[160px] pointer-events-none animate-pulse-glow"
+          style={{ animationDelay: "1.5s" }}
+        />
 
         <div className="relative z-10 max-w-[1400px] mx-auto">
           <div className="grid lg:grid-cols-[1.05fr_1fr] gap-10 items-stretch">
@@ -201,10 +206,13 @@ const Index = () => {
                 </div>
 
                 <h1 className="font-display font-black text-[56px] lg:text-[76px] leading-[0.95] tracking-[-0.035em] uppercase mb-10">
-                  Организуем<br />
-                  мероприятия,<br />
-                  о которых знают<br />
-                  только <span className="text-accent">приглашённые</span>
+                  <span className="text-gradient-hero">
+                    Организуем<br />
+                    мероприятия,<br />
+                    о которых знают<br />
+                    только{" "}
+                  </span>
+                  <span className="text-gradient-accent">приглашённые</span>
                 </h1>
 
                 <p className="text-[15px] lg:text-base text-muted-foreground leading-relaxed max-w-[520px] mb-10">
@@ -216,7 +224,7 @@ const Index = () => {
                 <div className="flex flex-col sm:flex-row gap-3">
                   <a
                     href="#cta"
-                    className="group inline-flex items-center justify-center gap-2 px-8 py-4 bg-accent text-white rounded-full font-medium hover:shadow-xl hover:shadow-accent/40 transition-all"
+                    className="btn-shimmer group inline-flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-accent via-[#ff6a1a] to-accent text-white rounded-full font-medium shadow-[0_10px_40px_-10px_rgba(255,77,26,0.6)] hover:shadow-[0_20px_60px_-10px_rgba(255,77,26,0.8)] hover:-translate-y-0.5 transition-all"
                   >
                     Обсудить мероприятие
                     <Icon name="ArrowRight" size={18} className="group-hover:translate-x-1 transition-transform" />
@@ -233,16 +241,27 @@ const Index = () => {
             </div>
 
             <div
-              className={`relative rounded-[28px] overflow-hidden border border-border/80 min-h-[460px] lg:min-h-[580px] transition-all duration-1000 ${
+              className={`relative transition-all duration-1000 ${
                 visibleSections["hero"] ? "opacity-100 scale-100" : "opacity-0 scale-[0.97]"
               }`}
             >
-              <img src={HERO_IMAGE} alt="Закрытое мероприятие" className="absolute inset-0 w-full h-full object-cover" />
-              <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent" />
-              <div className="absolute bottom-7 right-7 max-w-[240px] text-right">
-                <p className="text-sm text-white/90 leading-snug">
-                  Премиальная организация закрытых мероприятий в Москве и по всему миру
-                </p>
+              <div className="absolute -inset-6 bg-gradient-to-br from-accent/40 via-accent/10 to-transparent rounded-[36px] blur-3xl animate-pulse-glow pointer-events-none" />
+              <div className="relative rounded-[28px] overflow-hidden border-gradient-accent bg-card/60 min-h-[460px] lg:min-h-[580px] glow-ring scanlines">
+                <img
+                  src={HERO_IMAGE}
+                  alt="Закрытое мероприятие"
+                  className="absolute inset-0 w-full h-full object-cover animate-float"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent" />
+                <div className="absolute top-6 left-6 flex items-center gap-2 px-3 py-1.5 bg-background/70 backdrop-blur-md border border-accent/30 rounded-full">
+                  <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+                  <span className="text-[11px] tracking-[0.15em] text-white uppercase">Private access</span>
+                </div>
+                <div className="absolute bottom-7 right-7 max-w-[240px] text-right">
+                  <p className="text-sm text-white/90 leading-snug">
+                    Премиальная организация закрытых мероприятий в Москве и по всему миру
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -285,7 +304,7 @@ const Index = () => {
                 <span className="w-1.5 h-1.5 rounded-full bg-accent" />
                 <span className="text-xs font-medium tracking-[0.2em] text-accent uppercase">Услуги</span>
               </div>
-              <h2 className="font-display font-black text-[44px] lg:text-[64px] leading-[0.95] tracking-[-0.03em] uppercase">
+              <h2 className="font-display font-black text-[44px] lg:text-[64px] leading-[0.95] tracking-[-0.03em] uppercase text-gradient-hero">
                 Какие мероприятия<br />мы организуем
               </h2>
             </div>
@@ -300,12 +319,13 @@ const Index = () => {
               return (
                 <div
                   key={i}
-                  className={`group relative p-7 border border-border rounded-[22px] bg-card/50 hover:bg-card hover:border-accent/50 transition-all duration-700 ${
+                  className={`card-hover group relative p-7 border border-border rounded-[22px] bg-card/50 hover:bg-card hover:border-accent/60 overflow-hidden ${
                     isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
                   }`}
-                  style={{ transitionDelay: `${i * 90}ms` }}
+                  style={{ transitionDelay: `${i * 90}ms`, transitionDuration: "700ms" }}
                 >
-                  <div className="w-12 h-12 rounded-xl border border-accent/40 bg-accent/10 flex items-center justify-center mb-12 group-hover:bg-accent/20 transition">
+                  <div className="absolute -top-20 -right-20 w-40 h-40 rounded-full bg-accent/20 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                  <div className="relative w-12 h-12 rounded-xl border border-accent/40 bg-accent/10 flex items-center justify-center mb-12 group-hover:bg-accent/20 group-hover:border-accent/70 group-hover:shadow-[0_0_24px_-4px_rgba(255,77,26,0.6)] transition-all duration-500">
                     <Icon name={s.icon} size={20} className="text-accent" fallback="Circle" />
                   </div>
                   <h3 className="font-display font-black uppercase text-[17px] leading-tight tracking-tight mb-3 text-white">
@@ -331,7 +351,7 @@ const Index = () => {
               <span className="w-1.5 h-1.5 rounded-full bg-accent" />
               <span className="text-xs font-medium tracking-[0.2em] text-accent uppercase">Для кого</span>
             </div>
-            <h2 className="font-display font-black text-[40px] lg:text-[52px] leading-[0.95] tracking-[-0.03em] uppercase mb-10">
+            <h2 className="font-display font-black text-[40px] lg:text-[52px] leading-[0.95] tracking-[-0.03em] uppercase mb-10 text-gradient-hero">
               Кому подходит<br />наш формат
             </h2>
             <div className="space-y-3">
@@ -362,7 +382,7 @@ const Index = () => {
               <span className="w-1.5 h-1.5 rounded-full bg-accent" />
               <span className="text-xs font-medium tracking-[0.2em] text-accent uppercase">Ключевое преимущество</span>
             </div>
-            <h2 className="font-display font-black text-[40px] lg:text-[52px] leading-[0.95] tracking-[-0.03em] uppercase mb-10">
+            <h2 className="font-display font-black text-[40px] lg:text-[52px] leading-[0.95] tracking-[-0.03em] uppercase mb-10 text-gradient-hero">
               Почему нам<br />доверяют<br />конфиденциальные<br />проекты
             </h2>
             <div className="space-y-3">
@@ -396,7 +416,7 @@ const Index = () => {
               <span className="w-1.5 h-1.5 rounded-full bg-accent" />
               <span className="text-xs font-medium tracking-[0.2em] text-accent uppercase">Процесс</span>
             </div>
-            <h2 className="font-display font-black text-[44px] lg:text-[64px] leading-[0.95] tracking-[-0.03em] uppercase">
+            <h2 className="font-display font-black text-[44px] lg:text-[64px] leading-[0.95] tracking-[-0.03em] uppercase text-gradient-hero">
               Как мы работаем
             </h2>
           </div>
@@ -409,14 +429,14 @@ const Index = () => {
                 return (
                   <div
                     key={i}
-                    className={`relative transition-all duration-700 ${
+                    className={`group relative transition-all duration-700 ${
                       isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
                     }`}
                     style={{ transitionDelay: `${i * 120}ms` }}
                   >
-                    <div className="hidden md:flex absolute top-[28px] left-0 w-3 h-3 rounded-full bg-accent ring-4 ring-background shadow-[0_0_20px_rgba(255,77,26,0.8)]" />
+                    <div className="hidden md:flex absolute top-[28px] left-0 w-3 h-3 rounded-full bg-accent ring-4 ring-background shadow-[0_0_20px_rgba(255,77,26,0.9)] animate-pulse" />
                     <div className="md:pt-16 pt-0">
-                      <div className="font-display font-black text-[56px] leading-none text-accent mb-4 tracking-tighter">
+                      <div className="font-display font-black text-[56px] leading-none mb-4 tracking-tighter text-gradient-accent group-hover:scale-110 transition-transform">
                         {step.num}
                       </div>
                       <h3 className="font-display font-black uppercase text-[16px] tracking-tight mb-2 text-white">
@@ -444,7 +464,7 @@ const Index = () => {
               <span className="w-1.5 h-1.5 rounded-full bg-accent" />
               <span className="text-xs font-medium tracking-[0.2em] text-accent uppercase">FAQ</span>
             </div>
-            <h2 className="font-display font-black text-[44px] lg:text-[64px] leading-[0.95] tracking-[-0.03em] uppercase">
+            <h2 className="font-display font-black text-[44px] lg:text-[64px] leading-[0.95] tracking-[-0.03em] uppercase text-gradient-hero">
               Что важно клиентам<br />перед стартом
             </h2>
           </div>
@@ -455,12 +475,13 @@ const Index = () => {
               return (
                 <div
                   key={i}
-                  className={`p-7 border border-border rounded-[22px] bg-card/50 hover:border-accent/40 transition-all duration-700 ${
+                  className={`card-hover group relative p-7 border border-border rounded-[22px] bg-card/50 hover:border-accent/60 overflow-hidden ${
                     isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
                   }`}
-                  style={{ transitionDelay: `${i * 120}ms` }}
+                  style={{ transitionDelay: `${i * 120}ms`, transitionDuration: "700ms" }}
                 >
-                  <div className="w-10 h-10 rounded-xl border border-accent/40 bg-accent/10 flex items-center justify-center mb-6">
+                  <div className="absolute -top-16 -right-16 w-40 h-40 rounded-full bg-accent/15 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                  <div className="relative w-10 h-10 rounded-xl border border-accent/40 bg-accent/10 flex items-center justify-center mb-6 group-hover:shadow-[0_0_24px_-4px_rgba(255,77,26,0.6)] transition-all">
                     <Icon name="HelpCircle" size={18} className="text-accent" />
                   </div>
                   <h3 className="font-display font-bold text-[16px] leading-snug mb-3 text-white">{item.q}</h3>
@@ -476,11 +497,11 @@ const Index = () => {
       <section id="cta" className="px-8 pb-12">
         <div className="max-w-[1400px] mx-auto">
           <div
-            className={`relative overflow-hidden rounded-[28px] border border-border bg-card/60 p-10 lg:p-14 transition-all duration-1000 ${
+            className={`relative overflow-hidden rounded-[28px] border-gradient-accent bg-card/60 p-10 lg:p-14 glow-ring transition-all duration-1000 ${
               visibleSections["cta"] ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
             }`}
           >
-            <div className="absolute -right-32 -top-32 w-[480px] h-[480px] ember-glow pointer-events-none" />
+            <div className="absolute -right-32 -top-32 w-[480px] h-[480px] ember-glow pointer-events-none animate-pulse-glow" />
             <div
               className="absolute right-0 top-0 bottom-0 w-[200px] opacity-60 pointer-events-none"
               style={{
@@ -491,7 +512,7 @@ const Index = () => {
 
             <div className="relative grid lg:grid-cols-[1.3fr_1fr] gap-10 items-center">
               <div>
-                <h2 className="font-display font-black text-[40px] lg:text-[56px] leading-[0.95] tracking-[-0.03em] uppercase mb-5">
+                <h2 className="font-display font-black text-[40px] lg:text-[56px] leading-[0.95] tracking-[-0.03em] uppercase mb-5 text-gradient-hero">
                   Готовы обсудить<br />закрытое мероприятие?
                 </h2>
                 <p className="text-muted-foreground leading-relaxed max-w-xl mb-8">
@@ -513,7 +534,7 @@ const Index = () => {
               <div className="flex flex-col gap-4">
                 <a
                   href="mailto:events@brosco.studio"
-                  className="group inline-flex items-center justify-center gap-2 px-8 py-5 bg-accent text-white rounded-full font-medium hover:shadow-xl hover:shadow-accent/40 transition-all text-base"
+                  className="btn-shimmer group inline-flex items-center justify-center gap-2 px-8 py-5 bg-gradient-to-r from-accent via-[#ff6a1a] to-accent text-white rounded-full font-medium shadow-[0_10px_40px_-10px_rgba(255,77,26,0.6)] hover:shadow-[0_20px_60px_-10px_rgba(255,77,26,0.8)] hover:-translate-y-0.5 transition-all text-base"
                 >
                   Получить предложение
                   <Icon name="ArrowRight" size={18} className="group-hover:translate-x-1 transition-transform" />
