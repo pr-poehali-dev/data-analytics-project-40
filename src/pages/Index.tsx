@@ -1,19 +1,146 @@
 import { useEffect, useState } from "react";
-import { ArrowRight } from "lucide-react";
 import Icon from "@/components/ui/icon";
+
+const HERO_IMAGE = "https://cdn.poehali.dev/projects/9f54e8c0-24e5-4a85-9211-db6b3029508f/files/92515f0e-f1ca-4057-b306-14acf689529c.jpg";
+
+const NAV_LINKS = [
+  { href: "#about", label: "О нас" },
+  { href: "#services", label: "Услуги" },
+  { href: "#privacy", label: "Конфиденциальность" },
+  { href: "#formats", label: "Форматы" },
+  { href: "#advantages", label: "Преимущества" },
+  { href: "#process", label: "Процесс" },
+  { href: "#faq", label: "FAQ" },
+  { href: "#contacts", label: "Контакты" },
+];
+
+const TRUST_ITEMS = [
+  {
+    icon: "ShieldCheck",
+    title: "NDA с командой",
+    desc: "Все сотрудники и подрядчики работают по соглашению о конфиденциальности.",
+  },
+  {
+    icon: "EyeOff",
+    title: "Контроль фото и видео",
+    desc: "Согласуем правила съёмки и публикаций, исключаем несанкционированный контент.",
+  },
+  {
+    icon: "Users",
+    title: "Закрытый список доступа",
+    desc: "Доступ на мероприятие только по приглашениям и подтверждению.",
+  },
+  {
+    icon: "Lock",
+    title: "Защищённое хранение материалов",
+    desc: "Материалы хранятся по согласованным протоколам и срокам.",
+  },
+];
+
+const SERVICES = [
+  {
+    icon: "Briefcase",
+    title: "Корпоративные события",
+    desc: "Форумы, стратегические сессии, закрытые встречи и клиентские мероприятия.",
+  },
+  {
+    icon: "Wine",
+    title: "Частные мероприятия",
+    desc: "Дни рождения, ужины, private party и камерные события без лишнего внимания.",
+  },
+  {
+    icon: "Star",
+    title: "VIP / Closed events",
+    desc: "Закрытые презентации, визиты VIP-гостей и события с особым уровнем приватности.",
+  },
+  {
+    icon: "KeyRound",
+    title: "Под ключ",
+    desc: "Концепция, площадка, подрядчики, тайминг, безопасность и сопровождение в одном окне.",
+  },
+];
+
+const AUDIENCE = [
+  {
+    icon: "Building2",
+    title: "Для бизнеса",
+    desc: "Когда важны репутация, точность исполнения и приватность переговоров.",
+  },
+  {
+    icon: "User",
+    title: "Для private clients",
+    desc: "Когда событие должно остаться только для своих.",
+  },
+  {
+    icon: "UserCheck",
+    title: "Для публичных персон",
+    desc: "Когда требуется деликатная организация и полный контроль информации.",
+  },
+];
+
+const ADVANTAGES = [
+  {
+    icon: "Lock",
+    title: "Всё под 7 печатями",
+    desc: "Всё, что происходит на мероприятии, не разглашается и не выходит за рамки проекта.",
+  },
+  {
+    icon: "ShieldCheck",
+    title: "NDA и ограниченный доступ",
+    desc: "Подрядчики и команда работают по согласованным правилам конфиденциальности.",
+  },
+  {
+    icon: "EyeOff",
+    title: "Контроль контента",
+    desc: "Регулируем съёмку, публикации, списки гостей и доступ к материалам.",
+  },
+  {
+    icon: "Heart",
+    title: "Спокойствие клиента",
+    desc: "Вы уверены в результате и в том, что лишней огласки не будет.",
+  },
+];
+
+const PROCESS = [
+  { num: "01", title: "Бриф", desc: "Уточняем цели, формат, состав гостей и требования к приватности." },
+  { num: "02", title: "Концепция", desc: "Собираем сценарий, площадку, логистику и карту рисков." },
+  { num: "03", title: "Подготовка", desc: "Подрядчики, тайминг, доступы, протоколы безопасности и контроль контента." },
+  { num: "04", title: "Проведение", desc: "Координируем событие в день мероприятия без шума и сбоев." },
+  { num: "05", title: "После события", desc: "Передаём материалы по согласованному контуру или архивируем без разглашения." },
+];
+
+const FAQ = [
+  {
+    q: "Можно ли организовать мероприятие без публичности?",
+    a: "Да, мы выстраиваем процесс так, чтобы событие оставалось закрытым.",
+  },
+  {
+    q: "Как контролируется фото и видео?",
+    a: "Согласуем правила съёмки, публикации и хранения материалов заранее.",
+  },
+  {
+    q: "Можно ли подписать NDA?",
+    a: "Да, конфиденциальность фиксируется в документах и рабочих процессах.",
+  },
+];
+
+const BENEFIT_TAGS = [
+  { icon: "Lock", label: "Конфиденциально" },
+  { icon: "KeyRound", label: "Под ключ" },
+  { icon: "Clock", label: "Точный тайминг" },
+  { icon: "HandHeart", label: "Деликатное сопровождение" },
+];
 
 const Index = () => {
   const [visibleSections, setVisibleSections] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     const observers: Record<string, IntersectionObserver> = {};
-
-    const sectionIds = ["hero", "features", "how", "pricing", "cta"];
+    const sectionIds = ["hero", "trust", "services", "audience", "process", "faq", "cta"];
 
     sectionIds.forEach((id) => {
       const element = document.getElementById(id);
       if (!element) return;
-
       observers[id] = new IntersectionObserver(
         ([entry]) => {
           if (entry.isIntersecting) {
@@ -21,180 +148,170 @@ const Index = () => {
             observers[id].unobserve(element);
           }
         },
-        { threshold: 0.15 }
+        { threshold: 0.1 }
       );
-
       observers[id].observe(element);
     });
 
-    return () => {
-      Object.values(observers).forEach((observer) => observer.disconnect());
-    };
+    return () => Object.values(observers).forEach((o) => o.disconnect());
   }, []);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background text-foreground antialiased">
       {/* Header */}
-      <header className="fixed top-0 w-full bg-background/80 backdrop-blur-2xl border-b border-accent/20 z-50">
-        <div className="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
-          <div className="flex items-center">
-            <div className="font-display font-bold text-2xl tracking-tighter bg-gradient-to-r from-white via-accent to-accent/80 bg-clip-text text-transparent">
-              AgentForge
-            </div>
+      <header className="fixed top-0 w-full bg-background/70 backdrop-blur-xl border-b border-border/60 z-50">
+        <div className="max-w-[1400px] mx-auto px-8 py-5 flex justify-between items-center">
+          <div className="font-display font-black text-[13px] leading-[1.05] tracking-tight text-white uppercase">
+            BROSCO<br />PRIVATE<br />EVENTS
           </div>
-          <nav className="hidden md:flex gap-10 text-sm font-medium">
-            <a href="#features" className="text-muted-foreground hover:text-white transition-colors">
-              Возможности
-            </a>
-            <a href="#how" className="text-muted-foreground hover:text-white transition-colors">
-              Как это работает
-            </a>
-            <a href="#pricing" className="text-muted-foreground hover:text-white transition-colors">
-              Тарифы
-            </a>
+          <nav className="hidden lg:flex gap-8 text-sm font-medium">
+            {NAV_LINKS.map((l) => (
+              <a key={l.href} href={l.href} className="text-muted-foreground hover:text-white transition-colors">
+                {l.label}
+              </a>
+            ))}
           </nav>
-          <div className="flex gap-3">
-            <button className="px-5 py-2.5 text-sm font-medium border border-accent/40 rounded-full hover:border-accent/70 hover:bg-accent/10 transition-all text-white">
-              Войти
-            </button>
-            <button className="px-5 py-2.5 text-sm font-medium bg-gradient-to-r from-accent via-accent to-accent/80 text-black rounded-full hover:shadow-lg hover:shadow-accent/40 transition-all font-semibold">
-              Попробовать
-            </button>
-          </div>
+          <a
+            href="#cta"
+            className="hidden md:inline-flex px-5 py-2.5 text-sm font-medium bg-accent text-white rounded-full hover:shadow-lg hover:shadow-accent/40 transition-all"
+          >
+            Обсудить
+          </a>
         </div>
       </header>
 
-      {/* Hero Section */}
-      <section id="hero" className="relative pt-32 pb-32 px-6 min-h-screen flex items-center overflow-hidden">
-        <div className="absolute inset-0 w-full h-full flex items-center justify-center overflow-hidden">
-          <img src="/images/black-hole-gif.gif" alt="Black hole animation" className="w-auto h-3/4 object-contain" />
-        </div>
-        <div className="absolute inset-0 bg-black/70" />
+      {/* Hero */}
+      <section id="hero" className="relative pt-28 pb-20 px-8 overflow-hidden">
+        <div className="absolute inset-0 bg-grid opacity-40" />
+        <div className="absolute top-0 right-0 w-[60%] h-full ember-glow opacity-60 pointer-events-none" />
 
-        <div className="relative z-10 max-w-7xl mx-auto w-full">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
+        <div className="relative z-10 max-w-[1400px] mx-auto">
+          <div className="grid lg:grid-cols-[1.05fr_1fr] gap-10 items-stretch">
             <div
-              className={`transition-all duration-1000 ${visibleSections["hero"] ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+              className={`flex flex-col justify-between transition-all duration-1000 ${
+                visibleSections["hero"] ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+              }`}
             >
-              <div className="mb-8 inline-block">
-                <span className="text-xs font-medium tracking-widest text-accent/80 uppercase">
-                  Автономные AI-агенты нового поколения
-                </span>
-              </div>
-              <h1 className="text-6xl lg:text-7xl font-display font-black leading-tight mb-8 tracking-tighter">
-                <span className="bg-gradient-to-br from-white via-white to-accent/40 bg-clip-text text-transparent">
-                  Автоматизируй.
-                </span>
-                <br />
-                <span className="text-accent">Делегируй AI.</span>
-              </h1>
-              <p className="text-xl text-white/80 leading-relaxed mb-10 max-w-xl font-light">
-                AgentForge — платформа для создания умных AI-агентов, которые работают за вас 24/7.
-                Запустите первого агента за 5 минут без кода.
-              </p>
-              <div className="flex gap-4 mb-12 flex-col sm:flex-row">
-                <button className="group px-8 py-4 bg-gradient-to-r from-accent to-accent/90 text-black rounded-full hover:shadow-2xl hover:shadow-accent/50 transition-all font-semibold text-lg flex items-center gap-3 justify-center">
-                  Запустить агента
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition" />
-                </button>
-                <button className="px-8 py-4 border border-accent/40 rounded-full hover:border-accent/70 hover:bg-accent/10 transition-all font-medium text-lg text-white">
-                  Смотреть демо
-                </button>
-              </div>
-              <div className="grid grid-cols-3 gap-8 pt-8 border-t border-white/10">
-                <div>
-                  <div className="text-2xl font-bold text-accent mb-2">12 000+</div>
-                  <p className="text-sm text-white/60">Активных агентов</p>
+              <div>
+                <div className="flex items-center gap-2 mb-8">
+                  <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+                  <span className="text-xs font-medium tracking-[0.2em] text-accent uppercase">
+                    Конфиденциальные мероприятия
+                  </span>
                 </div>
-                <div>
-                  <div className="text-2xl font-bold text-white mb-2">2 млн+</div>
-                  <p className="text-sm text-white/60">Задач выполнено</p>
-                </div>
-                <div>
-                  <div className="text-2xl font-bold text-accent mb-2">99.99%</div>
-                  <p className="text-sm text-white/60">Аптайм</p>
+
+                <h1 className="font-display font-black text-[56px] lg:text-[76px] leading-[0.95] tracking-[-0.035em] uppercase mb-10">
+                  Организуем<br />
+                  мероприятия,<br />
+                  о которых знают<br />
+                  только <span className="text-accent">приглашённые</span>
+                </h1>
+
+                <p className="text-[15px] lg:text-base text-muted-foreground leading-relaxed max-w-[520px] mb-10">
+                  Частные, корпоративные и VIP-события под ключ.<br />
+                  Главное преимущество — абсолютная конфиденциальность:<br />
+                  всё, что происходит на мероприятии, остаётся внутри и не разглашается.
+                </p>
+
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <a
+                    href="#cta"
+                    className="group inline-flex items-center justify-center gap-2 px-8 py-4 bg-accent text-white rounded-full font-medium hover:shadow-xl hover:shadow-accent/40 transition-all"
+                  >
+                    Обсудить мероприятие
+                    <Icon name="ArrowRight" size={18} className="group-hover:translate-x-1 transition-transform" />
+                  </a>
+                  <a
+                    href="#cta"
+                    className="inline-flex items-center justify-center gap-2 px-8 py-4 border border-border rounded-full font-medium text-white hover:border-accent/60 hover:bg-accent/5 transition-all"
+                  >
+                    <Icon name="Lock" size={16} />
+                    Запросить NDA
+                  </a>
                 </div>
               </div>
             </div>
 
             <div
-              className={`relative h-96 lg:h-[550px] transition-all duration-1000 flex items-center justify-center ${visibleSections["hero"] ? "opacity-100 scale-100" : "opacity-0 scale-95"}`}
+              className={`relative rounded-[28px] overflow-hidden border border-border/80 min-h-[460px] lg:min-h-[580px] transition-all duration-1000 ${
+                visibleSections["hero"] ? "opacity-100 scale-100" : "opacity-0 scale-[0.97]"
+              }`}
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-accent/30 via-transparent to-transparent rounded-3xl blur-3xl animate-pulse" />
-              <img
-                src="/omnius-logo.png"
-                alt="AgentForge AI"
-                className="w-full max-w-sm lg:max-w-md drop-shadow-2xl animate-float relative z-10"
-              />
+              <img src={HERO_IMAGE} alt="Закрытое мероприятие" className="absolute inset-0 w-full h-full object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent" />
+              <div className="absolute bottom-7 right-7 max-w-[240px] text-right">
+                <p className="text-sm text-white/90 leading-snug">
+                  Премиальная организация закрытых мероприятий в Москве и по всему миру
+                </p>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Features Section */}
-      <section id="features" className="py-32 px-6 bg-accent/5">
-        <div className="max-w-7xl mx-auto">
+      {/* Trust Strip */}
+      <section id="trust" className="px-8 pb-20">
+        <div className="max-w-[1400px] mx-auto">
           <div
-            className={`text-center mb-20 transition-all duration-1000 ${visibleSections["features"] ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+            className={`grid md:grid-cols-2 lg:grid-cols-4 gap-4 p-3 border border-border rounded-[24px] bg-card/40 backdrop-blur-sm transition-all duration-1000 ${
+              visibleSections["trust"] ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+            }`}
           >
-            <span className="text-xs font-medium tracking-widest text-accent/60 uppercase">Возможности</span>
-            <h2 className="text-5xl lg:text-6xl font-display font-black tracking-tighter mt-4 mb-6">
-              <span className="bg-gradient-to-r from-white via-white to-accent/40 bg-clip-text text-transparent">
-                Всё для запуска агента
-              </span>
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Полный инструментарий для создания, обучения и управления AI-агентами в одной платформе
+            {TRUST_ITEMS.map((item, i) => (
+              <div key={i} className="p-6 flex gap-4 items-start">
+                <div className="w-11 h-11 rounded-xl border border-accent/40 bg-accent/10 flex items-center justify-center flex-shrink-0">
+                  <Icon name={item.icon} size={18} className="text-accent" fallback="Shield" />
+                </div>
+                <div>
+                  <h3 className="font-display font-bold text-[15px] mb-1.5 text-white">{item.title}</h3>
+                  <p className="text-[13px] text-muted-foreground leading-relaxed">{item.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Services */}
+      <section id="services" className="px-8 py-24">
+        <div className="max-w-[1400px] mx-auto">
+          <div
+            className={`grid lg:grid-cols-[1.4fr_1fr] gap-10 items-end mb-14 transition-all duration-1000 ${
+              visibleSections["services"] ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+            }`}
+          >
+            <div>
+              <div className="flex items-center gap-2 mb-5">
+                <span className="w-1.5 h-1.5 rounded-full bg-accent" />
+                <span className="text-xs font-medium tracking-[0.2em] text-accent uppercase">Услуги</span>
+              </div>
+              <h2 className="font-display font-black text-[44px] lg:text-[64px] leading-[0.95] tracking-[-0.03em] uppercase">
+                Какие мероприятия<br />мы организуем
+              </h2>
+            </div>
+            <p className="text-muted-foreground leading-relaxed max-w-md lg:text-right lg:ml-auto">
+              От идеи и логистики до координации площадки и полного продакшна события.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              {
-                icon: "Zap",
-                title: "Быстрый запуск",
-                desc: "Первый агент готов за 5 минут — шаблоны, визуальный конструктор, без кода",
-              },
-              {
-                icon: "Brain",
-                title: "Умный AI-движок",
-                desc: "Агенты учатся на ваших данных, адаптируются к задачам и улучшают результат",
-              },
-              {
-                icon: "TrendingUp",
-                title: "Автомасштабирование",
-                desc: "Платформа сама масштабирует ресурсы — агент справится с любым объёмом",
-              },
-              {
-                icon: "ShieldCheck",
-                title: "Безопасность данных",
-                desc: "Шифрование данных, изолированные окружения и соответствие требованиям GDPR",
-              },
-              {
-                icon: "GitBranch",
-                title: "Гибкие сценарии",
-                desc: "Стройте сложные цепочки автоматизации через визуальный редактор без программирования",
-              },
-              {
-                icon: "Plug",
-                title: "Интеграции",
-                desc: "Подключайте CRM, мессенджеры, API и любые сервисы через готовые коннекторы",
-              },
-            ].map((item, i) => {
-              const isVisible = visibleSections["features"];
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+            {SERVICES.map((s, i) => {
+              const isVisible = visibleSections["services"];
               return (
                 <div
                   key={i}
-                  className={`group p-8 border border-accent/10 hover:border-accent/40 rounded-2xl bg-card/50 hover:bg-card/80 transition-all duration-700 ${
-                    isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                  className={`group relative p-7 border border-border rounded-[22px] bg-card/50 hover:bg-card hover:border-accent/50 transition-all duration-700 ${
+                    isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
                   }`}
-                  style={{ transitionDelay: `${i * 100}ms` }}
+                  style={{ transitionDelay: `${i * 90}ms` }}
                 >
-                  <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center mb-6 group-hover:bg-accent/20 transition-colors">
-                    <Icon name={item.icon} size={22} className="text-accent" fallback="Cpu" />
+                  <div className="w-12 h-12 rounded-xl border border-accent/40 bg-accent/10 flex items-center justify-center mb-12 group-hover:bg-accent/20 transition">
+                    <Icon name={s.icon} size={20} className="text-accent" fallback="Circle" />
                   </div>
-                  <h3 className="font-display font-bold text-xl mb-3 text-white">{item.title}</h3>
-                  <p className="text-muted-foreground leading-relaxed">{item.desc}</p>
+                  <h3 className="font-display font-black uppercase text-[17px] leading-tight tracking-tight mb-3 text-white">
+                    {s.title}
+                  </h3>
+                  <p className="text-[13px] text-muted-foreground leading-relaxed">{s.desc}</p>
                 </div>
               );
             })}
@@ -202,141 +319,152 @@ const Index = () => {
         </div>
       </section>
 
-      {/* How It Works */}
-      <section id="how" className="py-32 px-6">
-        <div className="max-w-7xl mx-auto">
+      {/* Audience + Advantages */}
+      <section id="audience" className="px-8 py-24">
+        <div className="max-w-[1400px] mx-auto grid lg:grid-cols-2 gap-16">
           <div
-            className={`text-center mb-20 transition-all duration-1000 ${visibleSections["how"] ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+            className={`transition-all duration-1000 ${
+              visibleSections["audience"] ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+            }`}
           >
-            <span className="text-xs font-medium tracking-widest text-accent/60 uppercase">Процесс</span>
-            <h2 className="text-5xl lg:text-6xl font-display font-black tracking-tighter mt-4">
-              <span className="bg-gradient-to-r from-white via-white to-accent/40 bg-clip-text text-transparent">
-                Запуск за 4 шага
-              </span>
+            <div className="flex items-center gap-2 mb-5">
+              <span className="w-1.5 h-1.5 rounded-full bg-accent" />
+              <span className="text-xs font-medium tracking-[0.2em] text-accent uppercase">Для кого</span>
+            </div>
+            <h2 className="font-display font-black text-[40px] lg:text-[52px] leading-[0.95] tracking-[-0.03em] uppercase mb-10">
+              Кому подходит<br />наш формат
+            </h2>
+            <div className="space-y-3">
+              {AUDIENCE.map((a, i) => (
+                <div key={i} className="flex gap-5 items-start p-5 border border-border rounded-2xl bg-card/40 hover:border-accent/40 transition-all">
+                  <div className="w-12 h-12 rounded-xl border border-accent/40 bg-accent/10 flex items-center justify-center flex-shrink-0">
+                    <Icon name={a.icon} size={20} className="text-accent" fallback="User" />
+                  </div>
+                  <div>
+                    <h3 className="font-display font-black uppercase text-[15px] tracking-tight mb-1.5 text-white">
+                      {a.title}
+                    </h3>
+                    <p className="text-[13px] text-muted-foreground leading-relaxed">{a.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div
+            id="advantages"
+            className={`transition-all duration-1000 ${
+              visibleSections["audience"] ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+            }`}
+            style={{ transitionDelay: "150ms" }}
+          >
+            <div className="flex items-center gap-2 mb-5">
+              <span className="w-1.5 h-1.5 rounded-full bg-accent" />
+              <span className="text-xs font-medium tracking-[0.2em] text-accent uppercase">Ключевое преимущество</span>
+            </div>
+            <h2 className="font-display font-black text-[40px] lg:text-[52px] leading-[0.95] tracking-[-0.03em] uppercase mb-10">
+              Почему нам<br />доверяют<br />конфиденциальные<br />проекты
+            </h2>
+            <div className="space-y-3">
+              {ADVANTAGES.map((a, i) => (
+                <div key={i} className="flex gap-5 items-start p-5 border border-border rounded-2xl bg-card/40 hover:border-accent/40 transition-all">
+                  <div className="w-12 h-12 rounded-xl border border-accent/40 bg-accent/10 flex items-center justify-center flex-shrink-0">
+                    <Icon name={a.icon} size={20} className="text-accent" fallback="Shield" />
+                  </div>
+                  <div>
+                    <h3 className="font-display font-black uppercase text-[15px] tracking-tight mb-1.5 text-white">
+                      {a.title}
+                    </h3>
+                    <p className="text-[13px] text-muted-foreground leading-relaxed">{a.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Process */}
+      <section id="process" className="px-8 py-24">
+        <div className="max-w-[1400px] mx-auto">
+          <div
+            className={`mb-14 transition-all duration-1000 ${
+              visibleSections["process"] ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+            }`}
+          >
+            <div className="flex items-center gap-2 mb-5">
+              <span className="w-1.5 h-1.5 rounded-full bg-accent" />
+              <span className="text-xs font-medium tracking-[0.2em] text-accent uppercase">Процесс</span>
+            </div>
+            <h2 className="font-display font-black text-[44px] lg:text-[64px] leading-[0.95] tracking-[-0.03em] uppercase">
+              Как мы работаем
             </h2>
           </div>
 
-          <div className="grid md:grid-cols-4 gap-6">
-            {[
-              { num: "01", title: "Выберите шаблон", desc: "Готовые сценарии для продаж, поддержки, аналитики и десятков других задач" },
-              { num: "02", title: "Настройте агента", desc: "Задайте цели, загрузите данные и настройте поведение в визуальном редакторе" },
-              { num: "03", title: "Запустите", desc: "Один клик — и агент уже работает, выполняет задачи и обучается на результатах" },
-              { num: "04", title: "Масштабируйте", desc: "Добавляйте новых агентов, следите за метриками и оптимизируйте процессы" },
-            ].map((step, i) => {
-              const isVisible = visibleSections["how"];
-              return (
-                <div
-                  key={i}
-                  className={`relative transition-all duration-700 ${
-                    isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-                  }`}
-                  style={{ transitionDelay: `${i * 150}ms` }}
-                >
-                  <div className="group bg-accent/10 hover:bg-accent/20 border border-accent/20 hover:border-accent/40 rounded-2xl p-8 h-full flex flex-col justify-between transition-all backdrop-blur-sm cursor-pointer">
-                    <div>
-                      <div className="text-5xl font-display font-black text-accent mb-4 group-hover:scale-110 transition-transform">
+          <div className="relative">
+            <div className="hidden md:block absolute top-[34px] left-0 right-0 h-px bg-gradient-to-r from-border via-accent/40 to-border" />
+            <div className="grid md:grid-cols-5 gap-6">
+              {PROCESS.map((step, i) => {
+                const isVisible = visibleSections["process"];
+                return (
+                  <div
+                    key={i}
+                    className={`relative transition-all duration-700 ${
+                      isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+                    }`}
+                    style={{ transitionDelay: `${i * 120}ms` }}
+                  >
+                    <div className="hidden md:flex absolute top-[28px] left-0 w-3 h-3 rounded-full bg-accent ring-4 ring-background shadow-[0_0_20px_rgba(255,77,26,0.8)]" />
+                    <div className="md:pt-16 pt-0">
+                      <div className="font-display font-black text-[56px] leading-none text-accent mb-4 tracking-tighter">
                         {step.num}
                       </div>
-                      <h3 className="font-display font-bold text-xl mb-2 text-white">{step.title}</h3>
-                      <p className="text-muted-foreground leading-relaxed">{step.desc}</p>
+                      <h3 className="font-display font-black uppercase text-[16px] tracking-tight mb-2 text-white">
+                        {step.title}
+                      </h3>
+                      <p className="text-[13px] text-muted-foreground leading-relaxed max-w-[220px]">{step.desc}</p>
                     </div>
                   </div>
-                  {i < 3 && (
-                    <div className="hidden md:block absolute top-1/2 -right-3 w-6 h-0.5 bg-gradient-to-r from-accent/40 to-transparent" />
-                  )}
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Pricing */}
-      <section id="pricing" className="py-32 px-6 bg-accent/5">
-        <div className="max-w-5xl mx-auto">
+      {/* FAQ */}
+      <section id="faq" className="px-8 py-24">
+        <div className="max-w-[1400px] mx-auto">
           <div
-            className={`text-center mb-20 transition-all duration-1000 ${visibleSections["pricing"] ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+            className={`mb-14 transition-all duration-1000 ${
+              visibleSections["faq"] ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+            }`}
           >
-            <span className="text-xs font-medium tracking-widest text-accent/60 uppercase">Тарифы</span>
-            <h2 className="text-5xl lg:text-6xl font-display font-black tracking-tighter mt-4 mb-4">
-              <span className="bg-gradient-to-r from-white via-white to-accent/40 bg-clip-text text-transparent">
-                Прозрачные цены
-              </span>
+            <div className="flex items-center gap-2 mb-5">
+              <span className="w-1.5 h-1.5 rounded-full bg-accent" />
+              <span className="text-xs font-medium tracking-[0.2em] text-accent uppercase">FAQ</span>
+            </div>
+            <h2 className="font-display font-black text-[44px] lg:text-[64px] leading-[0.95] tracking-[-0.03em] uppercase">
+              Что важно клиентам<br />перед стартом
             </h2>
-            <p className="text-muted-foreground">Начните бесплатно, платите только за результат</p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8">
-            {[
-              {
-                name: "Стартовый",
-                price: "4 900 ₽/мес",
-                desc: "Для малого бизнеса и стартапов",
-                features: [
-                  "До 10 агентов",
-                  "100 000 задач/месяц",
-                  "30+ готовых интеграций",
-                  "Аналитика и отчёты",
-                  "Поддержка через чат",
-                ],
-                highlight: false,
-                cta: "Попробовать бесплатно",
-              },
-              {
-                name: "Корпоративный",
-                price: "По запросу",
-                desc: "Для команд с высокими нагрузками",
-                features: [
-                  "Безлимитные агенты",
-                  "Безлимитные задачи",
-                  "Выделенная инфраструктура",
-                  "Приоритетная поддержка 24/7",
-                  "Индивидуальные интеграции",
-                ],
-                highlight: true,
-                cta: "Связаться с нами",
-              },
-            ].map((plan, i) => {
-              const isVisible = visibleSections["pricing"];
+          <div className="grid md:grid-cols-3 gap-5">
+            {FAQ.map((item, i) => {
+              const isVisible = visibleSections["faq"];
               return (
                 <div
                   key={i}
-                  className={`group relative transition-all duration-700 ${
-                    isVisible ? "opacity-100 scale-100" : "opacity-0 scale-95"
-                  } ${plan.highlight ? "md:scale-105" : ""}`}
-                  style={{ transitionDelay: `${i * 200}ms` }}
+                  className={`p-7 border border-border rounded-[22px] bg-card/50 hover:border-accent/40 transition-all duration-700 ${
+                    isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+                  }`}
+                  style={{ transitionDelay: `${i * 120}ms` }}
                 >
-                  {plan.highlight && (
-                    <div className="absolute -inset-1 bg-gradient-to-r from-accent via-accent to-accent/60 rounded-3xl opacity-20 blur-xl group-hover:opacity-30 transition" />
-                  )}
-                  <div
-                    className={`relative p-10 border rounded-2xl h-full flex flex-col justify-between backdrop-blur-sm transition-all ${
-                      plan.highlight ? "border-accent/40 bg-accent/10" : "border-accent/10 bg-card/50 hover:bg-card/80"
-                    }`}
-                  >
-                    <div>
-                      <h3 className="font-display font-bold text-2xl mb-1 text-white">{plan.name}</h3>
-                      <p className="text-muted-foreground text-sm mb-6">{plan.desc}</p>
-                      <p className="text-4xl font-black text-accent mb-8">{plan.price}</p>
-                      <ul className="space-y-4 mb-10">
-                        {plan.features.map((f, j) => (
-                          <li key={j} className="flex gap-3 text-sm items-start">
-                            <ArrowRight className="w-4 h-4 text-accent flex-shrink-0 mt-1" />
-                            <span className="text-foreground/80">{f}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                    <button
-                      className={`w-full px-6 py-4 rounded-xl font-semibold transition-all ${
-                        plan.highlight
-                          ? "bg-gradient-to-r from-accent to-accent/80 text-black hover:shadow-xl hover:shadow-accent/40"
-                          : "border border-accent/20 hover:border-accent/40 hover:bg-accent/5 text-white"
-                      }`}
-                    >
-                      {plan.cta}
-                    </button>
+                  <div className="w-10 h-10 rounded-xl border border-accent/40 bg-accent/10 flex items-center justify-center mb-6">
+                    <Icon name="HelpCircle" size={18} className="text-accent" />
                   </div>
+                  <h3 className="font-display font-bold text-[16px] leading-snug mb-3 text-white">{item.q}</h3>
+                  <p className="text-[13px] text-muted-foreground leading-relaxed">{item.a}</p>
                 </div>
               );
             })}
@@ -344,42 +472,91 @@ const Index = () => {
         </div>
       </section>
 
-      {/* CTA */}
-      <section id="cta" className="py-32 px-6">
-        <div
-          className={`max-w-4xl mx-auto text-center transition-all duration-1000 ${visibleSections["cta"] ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
-        >
-          <h2 className="text-5xl lg:text-6xl font-display font-black tracking-tighter mb-6">
-            <span className="bg-gradient-to-r from-white via-white to-accent/40 bg-clip-text text-transparent">
-              Готовы делегировать AI?
-            </span>
-          </h2>
-          <p className="text-xl text-muted-foreground mb-12 font-light max-w-2xl mx-auto">
-            Тысячи компаний уже автоматизировали рутину с AgentForge. Запустите первого агента бесплатно сегодня.
-          </p>
-          <button className="group px-10 py-5 bg-gradient-to-r from-accent to-accent/90 text-black rounded-full hover:shadow-2xl hover:shadow-accent/40 transition-all font-bold text-lg flex items-center gap-3 mx-auto">
-            Начать бесплатно
-            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition" />
-          </button>
+      {/* Final CTA */}
+      <section id="cta" className="px-8 pb-12">
+        <div className="max-w-[1400px] mx-auto">
+          <div
+            className={`relative overflow-hidden rounded-[28px] border border-border bg-card/60 p-10 lg:p-14 transition-all duration-1000 ${
+              visibleSections["cta"] ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+            }`}
+          >
+            <div className="absolute -right-32 -top-32 w-[480px] h-[480px] ember-glow pointer-events-none" />
+            <div
+              className="absolute right-0 top-0 bottom-0 w-[200px] opacity-60 pointer-events-none"
+              style={{
+                background:
+                  "repeating-linear-gradient(90deg, transparent 0, transparent 14px, rgba(255,77,26,0.18) 14px, rgba(255,77,26,0.18) 16px)",
+              }}
+            />
+
+            <div className="relative grid lg:grid-cols-[1.3fr_1fr] gap-10 items-center">
+              <div>
+                <h2 className="font-display font-black text-[40px] lg:text-[56px] leading-[0.95] tracking-[-0.03em] uppercase mb-5">
+                  Готовы обсудить<br />закрытое мероприятие?
+                </h2>
+                <p className="text-muted-foreground leading-relaxed max-w-xl mb-8">
+                  Расскажите задачу — предложим формат, план и безопасную организацию под ваш сценарий.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {BENEFIT_TAGS.map((t, i) => (
+                    <div
+                      key={i}
+                      className="flex items-center gap-2 px-4 py-2 border border-border rounded-full text-[12px] text-muted-foreground"
+                    >
+                      <Icon name={t.icon} size={14} className="text-accent" fallback="Check" />
+                      {t.label}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-4">
+                <a
+                  href="mailto:events@brosco.studio"
+                  className="group inline-flex items-center justify-center gap-2 px-8 py-5 bg-accent text-white rounded-full font-medium hover:shadow-xl hover:shadow-accent/40 transition-all text-base"
+                >
+                  Получить предложение
+                  <Icon name="ArrowRight" size={18} className="group-hover:translate-x-1 transition-transform" />
+                </a>
+                <div id="contacts" className="space-y-3 mt-2">
+                  <a href="tel:+79991234567" className="flex items-center gap-3 text-sm text-white/90 hover:text-accent transition">
+                    <span className="w-9 h-9 rounded-full border border-border bg-card flex items-center justify-center">
+                      <Icon name="Phone" size={15} className="text-accent" />
+                    </span>
+                    +7 (999) 123-45-67
+                  </a>
+                  <a
+                    href="mailto:events@brosco.studio"
+                    className="flex items-center gap-3 text-sm text-white/90 hover:text-accent transition"
+                  >
+                    <span className="w-9 h-9 rounded-full border border-border bg-card flex items-center justify-center">
+                      <Icon name="Mail" size={15} className="text-accent" />
+                    </span>
+                    events@brosco.studio
+                  </a>
+                  <div className="flex items-center gap-3 text-sm text-white/90">
+                    <span className="w-9 h-9 rounded-full border border-border bg-card flex items-center justify-center">
+                      <Icon name="MapPin" size={15} className="text-accent" />
+                    </span>
+                    Москва, Россия
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-accent/10 py-12 px-6 bg-background/50">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6 text-sm text-muted-foreground">
-          <p>© 2025 AgentForge — Автономные AI-агенты</p>
-          <div className="flex gap-8">
-            <a href="#" className="hover:text-white transition-colors">
-              Конфиденциальность
+      <footer className="border-t border-border py-10 px-8">
+        <div className="max-w-[1400px] mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-muted-foreground">
+          <p>© 2025 BROSCO Private Events — Закрытые мероприятия под ключ</p>
+          <div className="flex gap-6">
+            <a href="#" className="hover:text-white transition">
+              Политика конфиденциальности
             </a>
-            <a href="#" className="hover:text-white transition-colors">
-              Условия
-            </a>
-            <a href="#" className="hover:text-white transition-colors">
-              Документация
-            </a>
-            <a href="#" className="hover:text-white transition-colors">
-              Контакты
+            <a href="#" className="hover:text-white transition">
+              NDA
             </a>
           </div>
         </div>
